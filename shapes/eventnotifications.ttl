@@ -8,6 +8,7 @@
 
 evt:SimpleShape
     a sh:NodeShape ;
+    sh:closed false;
     sh:targetClass as:Create , as:Update, as:Remove , as:Offer ;
     sh:property [
         sh:path as:actor ;
@@ -38,6 +39,7 @@ evt:SimpleShape
 
 evt:ReplyShape
     a sh:NodeShape ;
+    sh:closed false;
     sh:targetClass 
 		as:Announce , as:Accept , as:Reject , as:Undo ;
     sh:property [
