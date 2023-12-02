@@ -11,5 +11,5 @@ npm install
 ## Usage
 
 ```
-node index.js <shape-file> <data-file
+node index.js <shape-file> <data-file>
 ```
