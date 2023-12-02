@@ -1,0 +1,25 @@
+@prefix as: <https://www.w3.org/ns/activitystreams#> .
+@prefix ldp: <http://www.w3.org/ns/ldp#> .
+@prefix schema1: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:uuid:6E5FAF88-A7F1-47A4-B087-77345EBFF495> a as:Offer ;
+    as:actor <https://orcid.org/0000-0007-01219-312199> ;
+    as:object <http://acme.org/artifacts/alice/data-set-2022-01-19.zip> ;
+    as:origin <https://acme.org/system> ;
+    as:published "2022-06-12T12:12:12+00:00"^^xsd:dateTime ;
+    as:summary "Data submission 1234" ;
+    as:target <https://data.archive.xyz.net/> .
+
+<http://acme.org/artifacts/alice/data-set-2022-01-19.zip> a schema1:Dataset .
+
+<https://acme.org/system> a as:Application ;
+    as:name "ACME Research Institute System" .
+
+<https://data.archive.xyz.net/> a as:Application ;
+    ldp:inbox <https://data.archive.xyz.net/inbox/> ;
+    as:name "Data Archive XYZ" .
+
+<https://orcid.org/0000-0007-01219-312199> a as:Person ;
+    ldp:inbox <https://acme.org/inbox/alice> ;
+    as:name "Alice" .

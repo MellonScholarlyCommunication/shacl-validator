@@ -1,0 +1,57 @@
+@prefix evt: <https://www.eventnotifications.net> .
+@prefix as: <https://www.w3.org/ns/activitystreams#> .
+@prefix ldp: <http://www.w3.org/ns/ldp#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+evt:SendShape
+    a sh:NodeShape ;
+    sh:targetClass 
+			as:Create , as:Update , as:Remove , 
+			as:Offer, as:Undo, as:Announce ;
+    sh:property [
+        sh:path as:actor ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node as:AgentShape ;
+    ] ;
+	sh:property [
+      	sh:path as:object ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path as:origin ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node as:AgentShape ;
+    ] ;
+    sh:property [
+        sh:path as:target ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node as:AgentShape ;
+    ] ;
+	sh:property [
+      	sh:path as:context ;
+        sh:maxCount 0 ;
+    ] ;
+	sh:property [
+      	sh:path as:inReplyTo ;
+        sh:maxCount 0 ;
+    ] .
+
+evt:AgentShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:property [
+        sh:path ldp:inbox ;
+        sh:minCount 0;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRIOrLiteral ;
+    ] .
