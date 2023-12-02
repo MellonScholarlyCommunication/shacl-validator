@@ -1,4 +1,4 @@
-@prefix evt: <https://www.eventnotifications.net> .
+@prefix evt: <https://www.eventnotifications.net/ns/shapes#> .
 @prefix as: <https://www.w3.org/ns/activitystreams#> .
 @prefix ldp: <http://www.w3.org/ns/ldp#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -6,11 +6,40 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-evt:SendShape
+evt:SimpleShape
+    a sh:NodeShape ;
+    sh:targetClass as:Create , as:Update, as:Remove , as:Offer ;
+    sh:property [
+        sh:path as:actor ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node as:AgentShape ;
+    ] ;
+	sh:property [
+      	sh:path as:object ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path as:origin ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node as:AgentShape ;
+    ] ;
+    sh:property [
+        sh:path as:target ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node as:AgentShape ;
+    ] .
+
+evt:ReplyShape
     a sh:NodeShape ;
     sh:targetClass 
-			as:Create , as:Update , as:Remove , 
-			as:Offer, as:Undo, as:Announce ;
+		as:Announce , as:Accept , as:Reject , as:Undo ;
     sh:property [
         sh:path as:actor ;
         sh:nodeKind sh:IRI ;
@@ -39,11 +68,11 @@ evt:SendShape
     ] ;
 	sh:property [
       	sh:path as:context ;
-        sh:maxCount 0 ;
+        sh:maxCount 1 ;
     ] ;
 	sh:property [
       	sh:path as:inReplyTo ;
-        sh:maxCount 0 ;
+        sh:maxCount 1 ;
     ] .
 
 evt:AgentShape

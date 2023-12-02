@@ -22,7 +22,7 @@ async function main(shapeFile,dataFile) {
 
   const rdfSerializer = rdfSerializerImport.default;
   const quadStream = report.dataset.toStream();
-  const textStream = rdfSerializer.serialize(quadStream, { path: dataFile });
+  const textStream = rdfSerializer.serialize(quadStream, { path: shapeFile });
 
   console.log(await stringifyStream(textStream));
 

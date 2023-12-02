@@ -1,0 +1,34 @@
+{ 
+    "@context": [ 
+      "https://www.w3.org/ns/activitystreams" ,
+      {"schema": "https://schema.org/"}
+    ], 
+    "id": "urn:uuid:ED0E06DA-4294-43C0-8E87-800558E4045B",
+    "type": "Announce",
+    "actor": {
+       "id": "https://data.archive.xyz.net/",
+       "inbox": "https://data.archive.xyz.net/inbox/",
+       "name": "Data Archive XYZ",
+       "type": "Organization"
+    },
+    "origin": {
+       "id": "https://data.archive.xyz.net/system",
+       "name": "XYZ Archiving Department",
+       "type": "Application"
+    },
+    "inReplyTo" : "urn:uuid:6E5FAF88-A7F1-47A4-B087-77345EBFF495" ,
+    "context" : "http://acme.org/artifacts/alice/data-set-2022-01-19.zip" ,
+    "object": {
+        "id": "urn:uuid:CF21A499-1BDD-4B59-984A-FC94CF6FBA86",
+        "type": "Relationship",
+        "subject": "http://acme.org/artifacts/alice/data-set-2022-01-19.zip",
+        "relationship": "https://www.iana.org/memento",
+        "object": "https://data.archive.xyz.net/data/memento/21daF1921"
+     },
+    "target": {     
+       "id": "https://acme.org/profile/card#us",
+       "inbox": "https://acme.org/inbox/",
+       "name": "ACME Research Institute",
+       "type": "Organization"
+    }
+  }
