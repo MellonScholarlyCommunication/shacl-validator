@@ -1,0 +1,9 @@
+{
+  "@context": "http://schema.org/",
+  "@id": "urn:uuid:fa8cfd99-79b8-4143-ac39-0259b7872de5",
+  "@type": "Person",
+  "name": "Jane Doe",
+  "jobTitle": "Professor",
+  "telephone": "(425) 123-4567",
+  "url": "http://www.janedoe.com"
+}

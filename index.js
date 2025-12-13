@@ -27,7 +27,7 @@ async function main(shapeFile,dataFile,options) {
   }
   catch (e) {
     console.log(`ERROR - ${e.message}`);
-    console.error(e);
+    console.log(e);
     process.exit(3);
   }
 }

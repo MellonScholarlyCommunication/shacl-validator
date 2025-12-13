@@ -6,9 +6,25 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+evt:MainShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:targetNode "%MainSubject%" ;
+    sh:or (
+        [ sh:class as:Create   ]
+        [ sh:class as:Update   ]
+        [ sh:class as:Remove   ]
+        [ sh:class as:Offer    ]
+        [ sh:class as:Announce ]
+        [ sh:class as:Accept   ]
+        [ sh:class as:Reject   ]
+        [ sh:class as:Undo     ]
+    ) ;
+    sh:message "A missing activity (create,update,remove,offer,announce,accept,reject,undo)" .
+
 evt:SimpleShape
     a sh:NodeShape ;
-    sh:closed false;
+    sh:closed false ;
     sh:targetClass as:Create , as:Update, as:Remove , as:Offer ;
     sh:property [
         sh:path as:actor ;
