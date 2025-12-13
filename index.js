@@ -2,11 +2,11 @@
 
 import fs from 'fs';
 import { program } from 'commander';
-import { NotificationValidator, ParseError } from './lib/validator.js';
+import { SHACLValidator, ParseError } from './lib/validator.js';
 
 async function main(shapeFile,dataFile,options) {
   try {
-    const validator = new NotificationValidator();
+    const validator = new SHACLValidator();
     const shapes = await validator.parseRDFStream(fs.createReadStream(shapeFile), shapeFile);
     const data   = await validator.parseRDFStream(fs.createReadStream(dataFile), dataFile);
     const report = await validator.shaclValidate(shapes,data);
