@@ -1,7 +1,10 @@
 {
   "dependencies": {
+    "@zazuko/env": "^3.0.1",
     "@zazuko/env-node": "^3.0.0",
     "commander": "^14.0.2",
+    "rdf-ext": "^2.6.0",
+    "rdf-parse": "^4.0.0",
     "rdf-validate-shacl": "^0.6.5"
   },
   "type": "module",

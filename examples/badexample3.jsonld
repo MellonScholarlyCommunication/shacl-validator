@@ -2,7 +2,7 @@
    "@context": "https://www.w3.org/ns/activitystreams",
    "id": "https://acme.org/events/alice/0F402B08-F676-40EE-9D4B-480B3F985B65",
    "type": "Create",
-   "actor": [
+   "actor": { "@list": [
         {
             "id": "https://orcid.org/0000-0007-01219-312199",
             "inbox": "https://acme.org/inbox/alice",
@@ -15,7 +15,7 @@
             "name": "Bob",
             "type": "Person"
         }
-   ],
+   ]},
    "origin": {
       "id": "https://acme.org/system",
       "name": "ACME Research Institute System",

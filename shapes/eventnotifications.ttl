@@ -16,6 +16,7 @@ evt:SimpleShape
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:node evt:AgentShape ;
+        sh:message "value does not look like an URI" ;
     ] ;
 	sh:property [
       	sh:path as:object ;
