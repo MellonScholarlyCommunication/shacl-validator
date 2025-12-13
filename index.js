@@ -18,7 +18,7 @@ async function main(shapeFile,dataFile,options) {
       console.log(await validator.reportAsMarkdown(report));
     }
 
-    if (report.conforms) {
+    if (validator.isReportValid(report)) {
       process.exit(0);
     }
     else {
