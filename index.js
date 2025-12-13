@@ -5,25 +5,55 @@ import SHACLValidator from 'rdf-validate-shacl'
 import { program } from 'commander';
 
 async function main(shapeFile,dataFile,options) {
-  const shapes = await rdf.dataset().import(rdf.fromFile(shapeFile))
-  const data = await rdf.dataset().import(rdf.fromFile(dataFile))
+  try {
+    const report = await generateReport(shapeFile,dataFile);
+    
+    if (options.as == 'rdf') {
+      await serializeAsRDF(report);
+    }
+    else if (options.as == 'text') {
+      await serializeAsText(report);
+    }
 
+    if (report.conforms) {
+      process.exit(0);
+    }
+    else {
+      process.exit(2);
+    }
+  }
+  catch (e) {
+    console.log(`ERROR - ${e.message}`);
+    process.exit(3);
+  }
+}
+
+async function generateReport(shapeFile,dataFile) {
+  let shapes;
+  let data;
+
+  try {
+    shapes = await rdf.dataset().import(rdf.fromFile(shapeFile));
+  }
+  catch (e) {
+    throw new Error(`${shapeFile} is not a well-formed RDF file`);
+  }
+  
+  try {
+    data = await rdf.dataset().import(rdf.fromFile(dataFile));
+  }
+  catch (e) {
+    throw new Error(`${dataFile} is not a well-formed input RDF file`);
+  }
+
+  if (data.size === 0) {
+    throw new Error(`${dataFile} produced no data`);
+  }
+  
   const validator = new SHACLValidator(shapes, { factory: rdf });
   const report = await validator.validate(data);
 
-  if (options.as == 'rdf') {
-    await serializeAsRDF(report);
-  }
-  else if (options.as == 'text') {
-    await serializeAsText(report);
-  }
-
-  if (report.conforms) {
-    process.exit(0);
-  }
-  else {
-    process.exit(2);
-  }
+  return report;
 }
 
 async function serializeAsRDF(report) {
