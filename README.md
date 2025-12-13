@@ -14,6 +14,9 @@ npm install
 npx shacl-validator [--as [rdf|text]] <shape-file> <data-file>
 ```
 
+The SHACL shape file may optionally include a "%MainSubject%" string in the object position. 
+This string will be replaced by the main subject in the data file (if any).
+
 ## Report
 
 Possible error reports.
