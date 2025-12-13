@@ -1,11 +1,8 @@
 {
   "dependencies": {
-    "rdf-ext": "^2.5.0",
-    "rdf-parse": "^2.3.2",
-    "rdf-serialize": "^2.2.2",
-    "rdf-validate-shacl": "^0.5.1",
-    "stream-to-string": "^1.2.1",
-    "streamify-string": "^1.0.1"
+    "@zazuko/env-node": "^3.0.0",
+    "commander": "^14.0.2",
+    "rdf-validate-shacl": "^0.6.5"
   },
   "type": "module",
   "name": "shacl-validator",
@@ -15,8 +12,11 @@
   "directories": {
     "example": "examples"
   },
-  "devDependencies": {},
+  "bin": {
+    "shacl-validator": "index.js"
+  },
   "scripts": {
+    "shacl-validator": "node ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

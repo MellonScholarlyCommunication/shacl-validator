@@ -15,27 +15,26 @@ evt:SimpleShape
         sh:nodeKind sh:IRI ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:node evt:AgentShape ;
+        sh:node as:AgentShape ;
     ] ;
 	sh:property [
       	sh:path as:object ;
         sh:nodeKind sh:IRI ;
         sh:minCount 1 ;
-        sh:maxCount 1 ;
     ] ;
     sh:property [
         sh:path as:origin ;
         sh:nodeKind sh:IRI ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
-        sh:node evt:AgentShape ;
+        sh:node as:AgentShape ;
     ] ;
     sh:property [
         sh:path as:target ;
         sh:nodeKind sh:IRI ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
-        sh:node evt:AgentShape ;
+        sh:node as:AgentShape ;
     ] .
 
 evt:ReplyShape
@@ -48,7 +47,7 @@ evt:ReplyShape
         sh:nodeKind sh:IRI ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:node evt:AgentShape ;
+        sh:node as:AgentShape ;
     ] ;
 	sh:property [
       	sh:path as:object ;
@@ -60,14 +59,14 @@ evt:ReplyShape
         sh:nodeKind sh:IRI ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
-        sh:node evt:AgentShape ;
+        sh:node as:AgentShape ;
     ] ;
     sh:property [
         sh:path as:target ;
         sh:nodeKind sh:IRI ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
-        sh:node evt:AgentShape ;
+        sh:node as:AgentShape ;
     ] ;
 	sh:property [
       	sh:path as:context ;
