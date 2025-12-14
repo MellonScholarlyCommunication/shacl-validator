@@ -27,7 +27,7 @@ evt:MainShapeType
         [ sh:class as:Reject   ]
         [ sh:class as:Undo     ]
     ) ;
-    sh:message "Something without an activity type (create,update,remove,offer,announce,accept,reject,undo)" .
+    sh:message "Description without an activity type (create,update,remove,offer,announce,accept,reject,undo)" .
 
 evt:SimpleShape
     a sh:NodeShape ;
