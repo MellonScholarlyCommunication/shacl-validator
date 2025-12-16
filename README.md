@@ -10,12 +10,32 @@ npm install
 
 ## Usage
 
+Local validate a file
+
 ```
-npx shacl-validator [--as [rdf|text]] <shape-file> <data-file>
+npx shacl-validator validate [--as [rdf|text]] <shape-file> <data-file>
 ```
 
 The SHACL shape file may optionally include a "%MainSubject%" string in the object position. 
 This string will be replaced by the main subject in the data file (if any).
+
+Start a validation server:
+
+```
+npx shacl-validator server --port 3000 <shape-file>
+```
+
+Send an example file to the server:
+
+```
+curl -X POST --data-binary @examples/badexample3.jsonld http://localhost:3000/validate
+```
+
+Start a web server for a demo client:
+
+```
+npx serve public
+```
 
 ## Report
 

@@ -3,6 +3,7 @@
 import fs from 'fs';
 import { program } from 'commander';
 import { SHACLValidator, ParseError } from './lib/validator.js';
+import { runServer } from './lib/server.js';
 
 async function main(shapeFile,dataFile,options) {
   try {
@@ -33,13 +34,20 @@ async function main(shapeFile,dataFile,options) {
 }
 
 program
-  .option('--as <what>','output format','text')
+  .command('validate')
   .argument('<shapeFile>')
   .argument('<dataFile>')
+  .option('--as <what>','output format','text')
+  .action(async (shapeFile,dataFile,options) => {
+    await main(shapeFile,dataFile,options);
+  });
+
+program
+  .command('server')
+  .option('--port <port>','Server port',3000)
+  .argument('<shapeFile>')
+  .action( (shapeFile,options) => {
+    runServer(shapeFile, { port: options.port});
+  });
 
 program.parse();
-
-const shapeFile = program.args[0];
-const dataFile  = program.args[1];
-
-main(shapeFile,dataFile,program.opts());
