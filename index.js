@@ -44,6 +44,7 @@ program
 
 program
   .command('server')
+  .option('--logging','Apache style logging')
   .option('--port <port>','Server port',3000)
   .argument('<shapeFile>')
   .action( (shapeFile,options) => {

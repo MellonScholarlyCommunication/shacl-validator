@@ -2,7 +2,7 @@ module.exports = {
   apps : [
    {
     name   : "validator-server",
-    script : "node ./index.js server --port 3000 shapes/eventnotifications.ttl"
+    script : "node ./index.js server --logging --port 3000 shapes/eventnotifications.ttl"
    }
   ]
 }
