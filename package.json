@@ -6,6 +6,7 @@
     "cors": "^2.8.5",
     "express": "^5.2.1",
     "marked": "^17.0.1",
+    "morgan": "^1.10.1",
     "rdf-ext": "^2.6.0",
     "rdf-parse": "^4.0.0",
     "rdf-validate-shacl": "^0.6.5",

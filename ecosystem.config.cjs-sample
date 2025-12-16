@@ -1,0 +1,8 @@
+module.exports = {
+  apps : [
+   {
+    name   : "validator-server",
+    script : "node ./index.js server --port 3000 shapes/eventnotifications.ttl"
+   }
+  ]
+}
