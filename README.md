@@ -25,16 +25,12 @@ Start a validation server:
 npx shacl-validator server --port 3000 <shape-file>
 ```
 
-Send an example file to the server:
+Visit http://localhost:3000/ to see a sample validator application.
+
+Send an example file to the server API:
 
 ```
 curl -X POST --data-binary @examples/badexample3.jsonld http://localhost:3000/validate
-```
-
-Start a web server for a demo client:
-
-```
-npx serve public
 ```
 
 ## Report
