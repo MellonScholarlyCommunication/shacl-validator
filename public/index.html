@@ -89,7 +89,13 @@
         if (!response.ok) throw new Error(`Server error: ${response.status}`);
 
         const res = await response.json();
-        output.innerHTML = res['result'] || 'Validation successful (no details returned).';
+
+        if (res.error) {
+          output.innerHTML = `<span class="error">Error: ${res.error}</span>`;
+        }
+        else {
+          output.innerHTML = res['result'] || 'Validation successful (no details returned).';
+        }
       } catch (err) {
         output.innerHTML = `<span class="error">Error: ${err.message}</span>`;
       }

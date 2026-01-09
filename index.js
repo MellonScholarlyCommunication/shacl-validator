@@ -48,7 +48,7 @@ program
   .option('--port <port>','Server port',3000)
   .argument('<shapeFile>')
   .action( (shapeFile,options) => {
-    runServer(shapeFile, { port: options.port});
+    runServer(shapeFile, options);
   });
 
 program.parse();
