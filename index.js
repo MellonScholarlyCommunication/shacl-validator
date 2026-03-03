@@ -3,6 +3,7 @@
 import fs from 'fs';
 import { program } from 'commander';
 import { SHACLValidator } from './lib/validator.js';
+import { streamRDFfromTo } from './lib/util.js';
 import { runServer } from './lib/server.js';
 import 'dotenv/config';
 
@@ -41,6 +42,17 @@ program
   .option('--as <what>','output format','text')
   .action(async (shapeFile,dataFile,options) => {
     await main(shapeFile,dataFile,options);
+  });
+
+program
+  .command('transcode')
+  .argument('<dataFile>')
+  .option('-f,--from <from>','input content type', 'application/ld+json')
+  .option('-t,--to <to>','output content type', 'text/turtle')
+  .action( async (dataFile,options) => {
+    const stream = fs.createReadStream(dataFile);
+    const outstream = await streamRDFfromTo(stream,options.from,options.to);
+    outstream.pipe(process.stdout);
   });
 
 program

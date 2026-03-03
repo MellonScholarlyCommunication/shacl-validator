@@ -10,7 +10,9 @@
     "morgan": "^1.10.1",
     "rdf-ext": "^2.6.0",
     "rdf-parse": "^4.0.0",
+    "rdf-serialize": "^5.1.0",
     "rdf-validate-shacl": "^0.6.5",
+    "stream-to-string": "^1.2.1",
     "streamify-string": "^1.0.1",
     "winston": "^3.19.0"
   },

@@ -6,7 +6,7 @@
   "actor": {
     "id": "https://overlay-journal.com",
     "name": "Overlay Journal",
-    "type": "ServiceI"
+    "type": "Service"
   },
   "context": {
     "id": "https://research-organisation.org/repository/preprint/201203/421/"
