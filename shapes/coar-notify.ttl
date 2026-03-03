@@ -39,6 +39,10 @@ notify:RequestShape
     a sh:NodeShape ;
     sh:closed false ;
     sh:targetClass as:Offer ;
+    sh:or (
+        [ sh:class notify:EndorsementAction ]
+        [ sh:class notify:ReviewAction ]
+    ) ;
     sh:property [
         sh:path as:actor ;
         sh:nodeKind sh:IRI ;
@@ -67,11 +71,74 @@ notify:RequestShape
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:node notify:TargetShape
+    ] ;
+    sh:message "a notification without a EndorsementAction or ReviewAction" .
+
+# We define ResponseShape as having the main ingredients of every Notify
+# message: plus inReplyTo and an object that has a RequestShape
+notify:ResponseShape
+    a sh:NodeShape ;
+    sh:closed false;
+    sh:targetClass 
+		as:Accept , as:Reject , as:TentativeAccept, as:TentativeReject, as:Undo ;
+    sh:property [
+        sh:path as:actor ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ; # An actor is recommended
+        sh:maxCount 1 ;
+        sh:node notify:ActorShape ;
+        sh:or (
+            [ sh:class as:Application ]
+            [ sh:class as:Group ]
+            [ sh:class as:Organization ]
+            [ sh:class as:Person ]
+            [ sh:class as:Service ]
+        ) ;
+        sh:message "value does not look like an URI"
+    ] ;
+	sh:property [
+      	sh:path as:object ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path as:origin ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:OriginShape
+    ] ;
+    sh:property [
+        sh:path as:target ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:TargetShape
+    ] ;
+    sh:property [
+      	sh:path as:inReplyTo ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 
+    ] ; 
+	sh:property [
+      	sh:path as:summary ;
+        sh:nodeKind sh:Literal ;
+        sh:minCount 0 ;
+        sh:maxCount 1 
     ] .
 
 notify:ActorShape
     a sh:NodeShape ;
     sh:closed false ;
+    sh:or (
+        [ sh:class as:Application ]
+        [ sh:class as:Group ]
+        [ sh:class as:Organization ]
+        [ sh:class as:Person ]
+        [ sh:class as:Service ]
+    ) ;
     sh:property [
         sh:path sh:name;
         sh:minCount 0;
@@ -82,7 +149,6 @@ notify:ActorShape
 notify:ObjectShape
     a sh:NodeShape ;
     sh:closed false ;
-    # Ignore the SHOULD include the sorg:AboutPage here (optional)
     sh:or (
         [ sh:class as:Activity ]
         [ sh:class as:Application ]
@@ -110,6 +176,7 @@ notify:ObjectShape
         [ sh:class as:Tombstone ]
         [ sh:class as:Video ]
     ) ;
+
     sh:property [
         sh:path ietf:cite-as;
         sh:minCount 0;
@@ -168,75 +235,21 @@ notify:ItemShape
 notify:OriginShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:or (
-        [ sh:class as:Activity ]
-        [ sh:class as:Application ]
-        [ sh:class as:Article ]
-        [ sh:class as:Audio ]
-        [ sh:class as:Collection ]
-        [ sh:class as:CollectionPage ]
-        [ sh:class as:Relationship ]
-        [ sh:class as:Document ]
-        [ sh:class as:Event ]
-        [ sh:class as:Group ]
-        [ sh:class as:Image ]
-        [ sh:class as:IntransitiveActivity ]
-        [ sh:class as:Note ]
-        [ sh:class as:Object ]
-        [ sh:class as:OrderedCollection ]
-        [ sh:class as:OrderedCollectionPage ]
-        [ sh:class as:Organization ]
-        [ sh:class as:Page ]
-        [ sh:class as:Person ]
-        [ sh:class as:Place ]
-        [ sh:class as:Profile ]
-        [ sh:class as:Question ]
-        [ sh:class as:Service ]
-        [ sh:class as:Tombstone ]
-        [ sh:class as:Video ]
-    ) ;
+    # Ignoring the SHOULD as:Service value for class (optional)
     sh:property [
         sh:path ldp:inbox ;
         sh:minCount 1;
         sh:maxCount 1;
         sh:nodeKind sh:IRIOrLiteral ;
-    ] ;
-    sh:message "an origin without a valid activity streams 2.0 object type".
+    ] .
 
 notify:TargetShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:or (
-        [ sh:class as:Activity ]
-        [ sh:class as:Application ]
-        [ sh:class as:Article ]
-        [ sh:class as:Audio ]
-        [ sh:class as:Collection ]
-        [ sh:class as:CollectionPage ]
-        [ sh:class as:Relationship ]
-        [ sh:class as:Document ]
-        [ sh:class as:Event ]
-        [ sh:class as:Group ]
-        [ sh:class as:Image ]
-        [ sh:class as:IntransitiveActivity ]
-        [ sh:class as:Note ]
-        [ sh:class as:Object ]
-        [ sh:class as:OrderedCollection ]
-        [ sh:class as:OrderedCollectionPage ]
-        [ sh:class as:Organization ]
-        [ sh:class as:Page ]
-        [ sh:class as:Person ]
-        [ sh:class as:Place ]
-        [ sh:class as:Profile ]
-        [ sh:class as:Question ]
-        [ sh:class as:Service ]
-        [ sh:class as:Tombstone ]
-        [ sh:class as:Video ]
-    ) ;
+    # Ignoring the SHOULD as:Service value for class (optional)
     sh:property [
         sh:path ldp:inbox ;
         sh:minCount 1;
         sh:maxCount 1;
         sh:nodeKind sh:IRIOrLiteral ;
-    ] ;
-    sh:message "a target without a valid activity streams 2.0 object type".
+    ] .
