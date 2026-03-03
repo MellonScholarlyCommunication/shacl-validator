@@ -4,6 +4,7 @@ import fs from 'fs';
 import { program } from 'commander';
 import { SHACLValidator, ParseError } from './lib/validator.js';
 import { runServer } from './lib/server.js';
+import 'dotenv/config';
 
 async function main(shapeFile,dataFile,options) {
   try {
@@ -44,11 +45,20 @@ program
 
 program
   .command('server')
-  .option('--logging','Apache style logging')
-  .option('--port <port>','Server port',3000)
-  .argument('<shapeFile>')
+  .option('--logging','Apache style logging',Boolean(process.env.LOGGING))
+  .option('--port <port>','Server port',process.env.PORT)
+  .argument('[<shapeFile>]')
   .action( (shapeFile,options) => {
-    runServer(shapeFile, options);
+    if (shapeFile) { 
+      runServer(shapeFile, options);
+    }
+    else if (process.env.SHAPE_FILE) {
+      runServer(process.env.SHAPE_FILE, options);
+    }
+    else {
+      console.error(`Need a shapeFile or SHAPE_FILE environment variable`);
+      process.exitCode = 2;
+    }
   });
 
 program.parse();

@@ -22,8 +22,10 @@ This string will be replaced by the main subject in the data file (if any).
 Start a validation server:
 
 ```
-npx shacl-validator server --port 3000 <shape-file>
+npx shacl-validator server [--logging] [--port PORT] [<shape-file>]
 ```
+
+The port and shape-file can also be provided by a `.env` file.
 
 Visit http://localhost:3000/ to see a sample validator application.
 
