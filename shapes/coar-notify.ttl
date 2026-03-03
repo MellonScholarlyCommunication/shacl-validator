@@ -7,6 +7,25 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix this: <https://github.com/MellonScholarlyCommunication/shacl-validator/> .
+
+[
+    a this:Preprocess ; 
+    this:n3Script """
+@prefix as: <https://www.w3.org/ns/activitystreams#> .
+@prefix log: <http://www.w3.org/2000/10/swap/log#> .
+@prefix notify: <http://coar-notify.net/specification/vocabulary/> .
+{
+    ?X a as:Announce .
+    ?X a ?Y .
+    ?Y log:notQualTo as:Announce .
+}
+=>
+{
+    ?X a notify:GenericAction.
+}.
+"""
+].
 
 # Main shape the mother of all subjects
 notify:MainShape
@@ -48,6 +67,7 @@ notify:RequestShape
         sh:nodeKind sh:IRI ;
         sh:minCount 0 ; # An actor is recommended
         sh:maxCount 1 ;
+        sh:node notify:ActivityStreamsGroupTypes ;
         sh:node notify:ActorShape ;
         sh:message "value does not look like an URI"
     ] ;
@@ -56,7 +76,8 @@ notify:RequestShape
         sh:nodeKind sh:IRI ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:node notify:ObjectShape
+        sh:node notify:ActivityStreamsTypes ;
+        sh:node notify:ArtifactShape
     ] ;
     sh:property [
         sh:path as:origin ;
@@ -72,13 +93,13 @@ notify:RequestShape
         sh:maxCount 1 ;
         sh:node notify:TargetShape
     ] ;
-    sh:message "a notification without a EndorsementAction or ReviewAction" .
+    sh:message "an Offer notification without a EndorsementAction or ReviewAction" .
 
 # We define ResponseShape as having the main ingredients of every Notify
 # message: plus inReplyTo and an object that has a RequestShape
 notify:ResponseShape
     a sh:NodeShape ;
-    sh:closed false;
+    sh:closed false ;
     sh:targetClass 
 		as:Accept , as:Reject , as:TentativeAccept, as:TentativeReject, as:Undo ;
     sh:property [
@@ -86,14 +107,8 @@ notify:ResponseShape
         sh:nodeKind sh:IRI ;
         sh:minCount 0 ; # An actor is recommended
         sh:maxCount 1 ;
+        sh:node notify:ActivityStreamsGroupTypes ;
         sh:node notify:ActorShape ;
-        sh:or (
-            [ sh:class as:Application ]
-            [ sh:class as:Group ]
-            [ sh:class as:Organization ]
-            [ sh:class as:Person ]
-            [ sh:class as:Service ]
-        ) ;
         sh:message "value does not look like an URI"
     ] ;
 	sh:property [
@@ -129,16 +144,290 @@ notify:ResponseShape
         sh:maxCount 1 
     ] .
 
+# We define FlagShape as having the a limited form of the ResponseType properties
+notify:FlagShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:targetClass as:Flag ;
+    sh:or (
+        [ sh:class notify:UnprocessableNotification ]
+    ) ;
+    sh:property [
+        sh:path as:actor ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ; # An actor is recommended
+        sh:maxCount 1 ;
+        sh:node notify:ActivityStreamsGroupTypes ;
+        sh:node notify:ActorShape ;
+        sh:message "value does not look like an URI"
+    ] ;
+	sh:property [
+      	sh:path as:object ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path as:origin ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:OriginShape
+    ] ;
+    sh:property [
+        sh:path as:target ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:TargetShape
+    ] ;
+    sh:property [
+      	sh:path as:inReplyTo ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 
+    ] ; 
+	sh:property [
+      	sh:path as:summary ;
+        sh:nodeKind sh:Literal ;
+        sh:minCount 0 ;
+        sh:maxCount 1 
+    ] ;
+    sh:message "a Flag notification without a coar-notify UnprocessableNotification" .
+
+# Announce Shapes. We split them up to have better control over the different
+# types of validation.
+notify:AnnounceEndorsementShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:targetClass notify:EndorsementAction ;
+    sh:property [
+        sh:path as:actor ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ; # An actor is recommended
+        sh:maxCount 1 ;
+        sh:node notify:ActivityStreamsGroupTypes ;
+        sh:node notify:ActorShape ;
+        sh:message "value does not look like an URI"
+    ] ;
+	sh:property [
+      	sh:path as:object ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node notify:ActivityStreamsTypes ;
+        sh:node notify:ServiceResultShape
+    ] ;
+    sh:property [
+        sh:path as:origin ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:OriginShape
+    ] ;
+    sh:property [
+        sh:path as:target ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:TargetShape
+    ] ;
+    sh:property [
+      	sh:path as:inReplyTo ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 
+    ] ; 
+    sh:property [
+        sh:path as:context ;
+        sh:or (
+            [ sh:nodeKind sh:IRI ]
+
+            [ 
+                sh:node notify:ActivityStreamsTypes ;
+                sh:node notify:ContextShape 
+            ]
+        ) ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node notify:ContextShape 
+    ].
+
+notify:AnnounceReviewShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:targetClass notify:ReviewAction ;
+    sh:property [
+        sh:path as:actor ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ; # An actor is recommended
+        sh:maxCount 1 ;
+        sh:node notify:ActivityStreamsGroupTypes ;
+        sh:node notify:ActorShape ;
+        sh:message "value does not look like an URI"
+    ] ;
+	sh:property [
+      	sh:path as:object ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node notify:ActivityStreamsTypes ;
+        sh:node notify:ServiceResultShape
+    ] ;
+    sh:property [
+        sh:path as:origin ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:OriginShape
+    ] ;
+    sh:property [
+        sh:path as:target ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:TargetShape
+    ] ;
+    sh:property [
+      	sh:path as:inReplyTo ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 
+    ] ; 
+    sh:property [
+        sh:path as:context ;
+        sh:or (
+            [ sh:nodeKind sh:IRI ]
+
+            [ 
+                sh:node notify:ActivityStreamsTypes ;
+                sh:node notify:ContextShape 
+            ]
+        ) ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node notify:ContextShape 
+    ].
+
+notify:AnnounceRelationshipShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:targetClass notify:RelationshipAction ;
+    sh:property [
+        sh:path as:actor ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ; # An actor is recommended
+        sh:maxCount 1 ;
+        sh:node notify:ActivityStreamsGroupTypes ;
+        sh:node notify:ActorShape ;
+        sh:message "value does not look like an URI"
+    ] ;
+	sh:property [
+      	sh:path as:object ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node notify:ActivityStreamsTypes ;
+        sh:node notify:RelationshipServiceResultShape
+    ] ;
+    sh:property [
+        sh:path as:origin ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:OriginShape
+    ] ;
+    sh:property [
+        sh:path as:target ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:TargetShape
+    ] ;
+    sh:property [
+      	sh:path as:inReplyTo ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 
+    ] ; 
+    sh:property [
+        sh:path as:context ;
+        sh:or (
+            [ sh:nodeKind sh:IRI ]
+
+            [ 
+                sh:node notify:ActivityStreamsTypes ;
+                sh:node notify:ContextShape 
+            ]
+        ) ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node notify:ContextShape 
+    ].
+
+notify:GenericAnnounceShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:targetClass notify:GenericAction ;
+    sh:property [
+        sh:path as:actor ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ; # An actor is recommended
+        sh:maxCount 1 ;
+        sh:node notify:ActivityStreamsGroupTypes ;
+        sh:node notify:ActorShape ;
+        sh:message "value does not look like an URI"
+    ] ;
+	sh:property [
+      	sh:path as:object ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node notify:ActivityStreamsTypes ;
+        sh:node notify:ServiceResultShape
+    ] ;
+    sh:property [
+        sh:path as:origin ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:OriginShape
+    ] ;
+    sh:property [
+        sh:path as:target ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:node notify:TargetShape
+    ] ;
+    sh:property [
+      	sh:path as:inReplyTo ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ;
+        sh:maxCount 1 
+    ] ; 
+    sh:property [
+        sh:path as:context ;
+        sh:or (
+            [ sh:nodeKind sh:IRI ]
+
+            [ 
+                sh:node notify:ActivityStreamsTypes ;
+                sh:node notify:ContextShape 
+            ]
+        ) ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node notify:ContextShape 
+    ].
+
+## End Announce shapes
+
+## Helper shapes ##################################################
+
 notify:ActorShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:or (
-        [ sh:class as:Application ]
-        [ sh:class as:Group ]
-        [ sh:class as:Organization ]
-        [ sh:class as:Person ]
-        [ sh:class as:Service ]
-    ) ;
     sh:property [
         sh:path sh:name;
         sh:minCount 0;
@@ -146,37 +435,9 @@ notify:ActorShape
         sh:nodeKind sh:IRIOrLiteral
     ] .
 
-notify:ObjectShape
+notify:ArtifactShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:or (
-        [ sh:class as:Activity ]
-        [ sh:class as:Application ]
-        [ sh:class as:Article ]
-        [ sh:class as:Audio ]
-        [ sh:class as:Collection ]
-        [ sh:class as:CollectionPage ]
-        [ sh:class as:Relationship ]
-        [ sh:class as:Document ]
-        [ sh:class as:Event ]
-        [ sh:class as:Group ]
-        [ sh:class as:Image ]
-        [ sh:class as:IntransitiveActivity ]
-        [ sh:class as:Note ]
-        [ sh:class as:Object ]
-        [ sh:class as:OrderedCollection ]
-        [ sh:class as:OrderedCollectionPage ]
-        [ sh:class as:Organization ]
-        [ sh:class as:Page ]
-        [ sh:class as:Person ]
-        [ sh:class as:Place ]
-        [ sh:class as:Profile ]
-        [ sh:class as:Question ]
-        [ sh:class as:Service ]
-        [ sh:class as:Tombstone ]
-        [ sh:class as:Video ]
-    ) ;
-
     sh:property [
         sh:path ietf:cite-as;
         sh:minCount 0;
@@ -188,49 +449,72 @@ notify:ObjectShape
         sh:minCount 1;
         sh:maxCount 1;
         sh:nodeKind sh:IRI;
+        sh:node notify:ActivityStreamsTypes ;
         sh:node notify:ItemShape;
         sh:message "less than 1 value (not a valid ietf:item)"
+    ].
+
+notify:ContextShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:property [
+        sh:path ietf:cite-as;
+        sh:minCount 0;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRI
     ] ;
-    sh:message "an object without a valid activity streams 2.0 object type".
+    sh:property [
+        sh:path ietf:item;
+        sh:minCount 0;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRI;
+        sh:node notify:ActivityStreamsTypes ;
+        sh:node notify:ItemShape ;
+        sh:message "less than 1 value (not a valid ietf:item)"
+    ].
+
+notify:ServiceResultShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:property [
+        sh:path ietf:cite-as;
+        sh:minCount 0;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRI
+    ].
+
+notify:RelationshipServiceResultShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:property [
+        sh:path as:subject ; 
+        sh:minCount 1;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRI
+    ] ;
+    sh:property [
+        sh:path as:relationship ; 
+        sh:minCount 1;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRI
+    ] ;
+    sh:property [
+        sh:path as:object ; 
+        sh:minCount 1;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRI
+    ].
 
 notify:ItemShape
     a sh:NodeShape ;
     sh:closed false ;
     # Ignore the SHOULD include a value from schema.org (optional)
-    sh:or (
-        [ sh:class as:Activity ]
-        [ sh:class as:Application ]
-        [ sh:class as:Article ]
-        [ sh:class as:Audio ]
-        [ sh:class as:Collection ]
-        [ sh:class as:CollectionPage ]
-        [ sh:class as:Relationship ]
-        [ sh:class as:Document ]
-        [ sh:class as:Event ]
-        [ sh:class as:Group ]
-        [ sh:class as:Image ]
-        [ sh:class as:IntransitiveActivity ]
-        [ sh:class as:Note ]
-        [ sh:class as:Object ]
-        [ sh:class as:OrderedCollection ]
-        [ sh:class as:OrderedCollectionPage ]
-        [ sh:class as:Organization ]
-        [ sh:class as:Page ]
-        [ sh:class as:Person ]
-        [ sh:class as:Place ]
-        [ sh:class as:Profile ]
-        [ sh:class as:Question ]
-        [ sh:class as:Service ]
-        [ sh:class as:Tombstone ]
-        [ sh:class as:Video ]
-    ) ;
     sh:property [
         sh:path as:mediaType;
         sh:minCount 1;
         sh:maxCount 1; 
         sh:shape sh:Literal
-    ] ;
-    sh:message "an ietf:item without a valid activity streams 2.0 object type".
+    ].
 
 notify:OriginShape
     a sh:NodeShape ;
@@ -253,3 +537,45 @@ notify:TargetShape
         sh:maxCount 1;
         sh:nodeKind sh:IRIOrLiteral ;
     ] .
+
+notify:ActivityStreamsGroupTypes
+    a sh:NodeShape ;
+    sh:message "A type that is not a valid ActivityStreams 2.0 type" ;
+    sh:or (
+            [ sh:class as:Application ]
+            [ sh:class as:Group ]
+            [ sh:class as:Organization ]
+            [ sh:class as:Person ]
+            [ sh:class as:Service ]
+    ) .
+ 
+notify:ActivityStreamsTypes
+    a sh:NodeShape ;
+    sh:message "A type that is not a valid ActivityStreams 2.0 type" ;
+    sh:or (
+        [ sh:class as:Activity ]
+        [ sh:class as:Application ]
+        [ sh:class as:Article ]
+        [ sh:class as:Audio ]
+        [ sh:class as:Collection ]
+        [ sh:class as:CollectionPage ]
+        [ sh:class as:Relationship ]
+        [ sh:class as:Document ]
+        [ sh:class as:Event ]
+        [ sh:class as:Group ]
+        [ sh:class as:Image ]
+        [ sh:class as:IntransitiveActivity ]
+        [ sh:class as:Note ]
+        [ sh:class as:Object ]
+        [ sh:class as:OrderedCollection ]
+        [ sh:class as:OrderedCollectionPage ]
+        [ sh:class as:Organization ]
+        [ sh:class as:Page ]
+        [ sh:class as:Person ]
+        [ sh:class as:Place ]
+        [ sh:class as:Profile ]
+        [ sh:class as:Question ]
+        [ sh:class as:Service ]
+        [ sh:class as:Tombstone ]
+        [ sh:class as:Video ]
+    ) .

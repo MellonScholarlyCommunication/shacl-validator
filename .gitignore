@@ -2,3 +2,4 @@ node_modules
 .nvmrc
 ecosystem.config.cjs
 .env
+.DS_Store

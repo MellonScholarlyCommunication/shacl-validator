@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import { program } from 'commander';
-import { SHACLValidator, ParseError } from './lib/validator.js';
+import { SHACLValidator } from './lib/validator.js';
 import { runServer } from './lib/server.js';
 import 'dotenv/config';
 
