@@ -1,0 +1,242 @@
+@prefix notify: <http://coar-notify.net/specification/vocabulary/> .
+@prefix ietf: <http://www.iana.org/assignments/relation/> .
+@prefix sorg: <http://schema.org/> .
+@prefix as: <https://www.w3.org/ns/activitystreams#> .
+@prefix ldp: <http://www.w3.org/ns/ldp#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Main shape the mother of all subjects
+notify:MainShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:targetNode "%MainSubject%" ;
+    sh:nodeKind sh:IRI ;
+    sh:message "A *notification*, with a value that does not have a valid *URL* or *URN*" .
+
+# All supported shapes
+notify:MainShapeType 
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:targetNode "%MainSubject%" ;
+    sh:or (
+        [ sh:class as:Accept   ]
+        [ sh:class as:Announce ]
+        [ sh:class as:Flag     ]
+        [ sh:class as:Offer    ]
+        [ sh:class as:Reject   ]
+        [ sh:class as:TentativeAccept ]
+        [ sh:class as:TentativeReject ]
+        [ sh:class as:Undo     ]
+    ) ;
+    sh:message "Description without an activity type (accept, announce, flag, offer, reject, tentativeaccept, tentativereject, undo)" .
+
+# We define RequestShape as having the main ingredients of every Notify
+# message: actor, object, origin, target
+notify:RequestShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:targetClass as:Offer ;
+    sh:property [
+        sh:path as:actor ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 0 ; # An actor is recommended
+        sh:maxCount 1 ;
+        sh:node notify:ActorShape ;
+        sh:message "value does not look like an URI"
+    ] ;
+	sh:property [
+      	sh:path as:object ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node notify:ObjectShape
+    ] ;
+    sh:property [
+        sh:path as:origin ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node notify:OriginShape
+    ] ;
+    sh:property [
+        sh:path as:target ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node notify:TargetShape
+    ] .
+
+notify:ActorShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:property [
+        sh:path sh:name;
+        sh:minCount 0;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRIOrLiteral
+    ] .
+
+notify:ObjectShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    # Ignore the SHOULD include the sorg:AboutPage here (optional)
+    sh:or (
+        [ sh:class as:Activity ]
+        [ sh:class as:Application ]
+        [ sh:class as:Article ]
+        [ sh:class as:Audio ]
+        [ sh:class as:Collection ]
+        [ sh:class as:CollectionPage ]
+        [ sh:class as:Relationship ]
+        [ sh:class as:Document ]
+        [ sh:class as:Event ]
+        [ sh:class as:Group ]
+        [ sh:class as:Image ]
+        [ sh:class as:IntransitiveActivity ]
+        [ sh:class as:Note ]
+        [ sh:class as:Object ]
+        [ sh:class as:OrderedCollection ]
+        [ sh:class as:OrderedCollectionPage ]
+        [ sh:class as:Organization ]
+        [ sh:class as:Page ]
+        [ sh:class as:Person ]
+        [ sh:class as:Place ]
+        [ sh:class as:Profile ]
+        [ sh:class as:Question ]
+        [ sh:class as:Service ]
+        [ sh:class as:Tombstone ]
+        [ sh:class as:Video ]
+    ) ;
+    sh:property [
+        sh:path ietf:cite-as;
+        sh:minCount 0;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRI
+    ] ;
+    sh:property [
+        sh:path ietf:item;
+        sh:minCount 1;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRI;
+        sh:node notify:ItemShape;
+        sh:message "less than 1 value (not a valid ietf:item)"
+    ] ;
+    sh:message "an object without a valid activity streams 2.0 object type".
+
+notify:ItemShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    # Ignore the SHOULD include a value from schema.org (optional)
+    sh:or (
+        [ sh:class as:Activity ]
+        [ sh:class as:Application ]
+        [ sh:class as:Article ]
+        [ sh:class as:Audio ]
+        [ sh:class as:Collection ]
+        [ sh:class as:CollectionPage ]
+        [ sh:class as:Relationship ]
+        [ sh:class as:Document ]
+        [ sh:class as:Event ]
+        [ sh:class as:Group ]
+        [ sh:class as:Image ]
+        [ sh:class as:IntransitiveActivity ]
+        [ sh:class as:Note ]
+        [ sh:class as:Object ]
+        [ sh:class as:OrderedCollection ]
+        [ sh:class as:OrderedCollectionPage ]
+        [ sh:class as:Organization ]
+        [ sh:class as:Page ]
+        [ sh:class as:Person ]
+        [ sh:class as:Place ]
+        [ sh:class as:Profile ]
+        [ sh:class as:Question ]
+        [ sh:class as:Service ]
+        [ sh:class as:Tombstone ]
+        [ sh:class as:Video ]
+    ) ;
+    sh:property [
+        sh:path as:mediaType;
+        sh:minCount 1;
+        sh:maxCount 1; 
+        sh:shape sh:Literal
+    ] ;
+    sh:message "an ietf:item without a valid activity streams 2.0 object type".
+
+notify:OriginShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:or (
+        [ sh:class as:Activity ]
+        [ sh:class as:Application ]
+        [ sh:class as:Article ]
+        [ sh:class as:Audio ]
+        [ sh:class as:Collection ]
+        [ sh:class as:CollectionPage ]
+        [ sh:class as:Relationship ]
+        [ sh:class as:Document ]
+        [ sh:class as:Event ]
+        [ sh:class as:Group ]
+        [ sh:class as:Image ]
+        [ sh:class as:IntransitiveActivity ]
+        [ sh:class as:Note ]
+        [ sh:class as:Object ]
+        [ sh:class as:OrderedCollection ]
+        [ sh:class as:OrderedCollectionPage ]
+        [ sh:class as:Organization ]
+        [ sh:class as:Page ]
+        [ sh:class as:Person ]
+        [ sh:class as:Place ]
+        [ sh:class as:Profile ]
+        [ sh:class as:Question ]
+        [ sh:class as:Service ]
+        [ sh:class as:Tombstone ]
+        [ sh:class as:Video ]
+    ) ;
+    sh:property [
+        sh:path ldp:inbox ;
+        sh:minCount 1;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRIOrLiteral ;
+    ] ;
+    sh:message "an origin without a valid activity streams 2.0 object type".
+
+notify:TargetShape
+    a sh:NodeShape ;
+    sh:closed false ;
+    sh:or (
+        [ sh:class as:Activity ]
+        [ sh:class as:Application ]
+        [ sh:class as:Article ]
+        [ sh:class as:Audio ]
+        [ sh:class as:Collection ]
+        [ sh:class as:CollectionPage ]
+        [ sh:class as:Relationship ]
+        [ sh:class as:Document ]
+        [ sh:class as:Event ]
+        [ sh:class as:Group ]
+        [ sh:class as:Image ]
+        [ sh:class as:IntransitiveActivity ]
+        [ sh:class as:Note ]
+        [ sh:class as:Object ]
+        [ sh:class as:OrderedCollection ]
+        [ sh:class as:OrderedCollectionPage ]
+        [ sh:class as:Organization ]
+        [ sh:class as:Page ]
+        [ sh:class as:Person ]
+        [ sh:class as:Place ]
+        [ sh:class as:Profile ]
+        [ sh:class as:Question ]
+        [ sh:class as:Service ]
+        [ sh:class as:Tombstone ]
+        [ sh:class as:Video ]
+    ) ;
+    sh:property [
+        sh:path ldp:inbox ;
+        sh:minCount 1;
+        sh:maxCount 1;
+        sh:nodeKind sh:IRIOrLiteral ;
+    ] ;
+    sh:message "a target without a valid activity streams 2.0 object type".
