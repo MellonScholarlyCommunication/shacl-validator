@@ -11,7 +11,7 @@ evt:MainShape
     sh:closed false ;
     sh:targetNode "%MainSubject%" ;
     sh:nodeKind sh:IRI ;
-    sh:message "A *notification*, with a value that does not have a valid *URL* or *URN*" .
+    sh:message "a *notification*, with a value that does not have a valid *URL* or *URN*" .
 
 evt:MainShapeType 
     a sh:NodeShape ;
@@ -27,7 +27,7 @@ evt:MainShapeType
         [ sh:class as:Reject   ]
         [ sh:class as:Undo     ]
     ) ;
-    sh:message "Description without an activity type (create,update,remove,offer,announce,accept,reject,undo)" .
+    sh:message "description without an activity type (create,update,remove,offer,announce,accept,reject,undo)" .
 
 evt:SimpleShape
     a sh:NodeShape ;

@@ -15,7 +15,7 @@ notify:MainShape
     sh:closed false ;
     sh:targetNode "%MainSubject%" ;
     sh:nodeKind sh:IRI ;
-    sh:message "A *notification*, with a value that does not have a valid *URL* or *URN*" .
+    sh:message "a *notification*, with a value that does not have a valid *URL* or *URN*" .
 
 # All supported shapes
 notify:MainShapeType 
@@ -32,7 +32,7 @@ notify:MainShapeType
         [ sh:class as:TentativeReject ]
         [ sh:class as:Undo     ]
     ) ;
-    sh:message "Description without an activity type (accept, announce, flag, offer, reject, tentativeaccept, tentativereject, undo)" .
+    sh:message "description without an activity type (Accept, Announce, Flag, Offer, Reject, TentativeAccept, TentativeReject, Undo)" .
 
 # We define RequestShape as having the main ingredients of every Notify
 # message: actor, object, origin, target
@@ -391,7 +391,10 @@ notify:GenericAnnounceShape
 			SELECT ?this
 			WHERE {
                 ?this a as:Announce .
-				?this a notify:GenericAction .
+                FILTER NOT EXISTS {
+                    ?this a ?otherType .
+                    FILTER (?otherType != as:Announce)
+                }
 			}
 		"""
 	] ;
@@ -566,7 +569,7 @@ notify:TargetShape
 
 notify:ActivityStreamsGroupTypes
     a sh:NodeShape ;
-    sh:message "A type that is not a valid ActivityStreams 2.0 type" ;
+    sh:message "a type that is not a valid ActivityStreams 2.0 type" ;
     sh:or (
             [ sh:class as:Application ]
             [ sh:class as:Group ]
@@ -577,7 +580,7 @@ notify:ActivityStreamsGroupTypes
  
 notify:ActivityStreamsTypes
     a sh:NodeShape ;
-    sh:message "A type that is not a valid ActivityStreams 2.0 type" ;
+    sh:message "a type that is not a valid ActivityStreams 2.0 type" ;
     sh:or (
         [ sh:class as:Activity ]
         [ sh:class as:Application ]
