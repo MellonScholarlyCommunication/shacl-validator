@@ -3,15 +3,15 @@
 import fs from 'fs';
 import { program } from 'commander';
 import { SHACLValidator } from '../lib/validator/shacl-validator.js';
-import { streamRDFfromTo } from '../lib/util.js';
+import { streamRDFfromTo, parseRDFStream  } from '../lib/util.js';
 import { runServer } from '../lib/server.js';
 import 'dotenv/config';
 
 async function main(dataFile,options) {
   try {
     const validator = new SHACLValidator();
-    const shapes = await validator.parseRDFStream(fs.createReadStream(options.shape), options.shape);
-    const data   = await validator.parseRDFStream(fs.createReadStream(dataFile), dataFile);
+    const shapes = await parseRDFStream(fs.createReadStream(options.shape), options.shape);
+    const data   = await parseRDFStream(fs.createReadStream(dataFile), dataFile);
     const report = await validator.validate(shapes,data);
     
     if (options.as == 'rdf') {
