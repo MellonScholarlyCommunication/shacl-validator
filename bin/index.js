@@ -2,17 +2,17 @@
 
 import fs from 'fs';
 import { program } from 'commander';
-import { SHACLValidator } from './lib/validator.js';
-import { streamRDFfromTo } from './lib/util.js';
-import { runServer } from './lib/server.js';
+import { SHACLValidator } from '../lib/validator/shacl-validator.js';
+import { streamRDFfromTo } from '../lib/util.js';
+import { runServer } from '../lib/server.js';
 import 'dotenv/config';
 
-async function main(shapeFile,dataFile,options) {
+async function main(dataFile,options) {
   try {
     const validator = new SHACLValidator();
-    const shapes = await validator.parseRDFStream(fs.createReadStream(shapeFile), shapeFile);
+    const shapes = await validator.parseRDFStream(fs.createReadStream(options.shape), options.shape);
     const data   = await validator.parseRDFStream(fs.createReadStream(dataFile), dataFile);
-    const report = await validator.shaclValidate(shapes,data);
+    const report = await validator.validate(shapes,data);
     
     if (options.as == 'rdf') {
       console.log(await validator.reportAsRDF(report));
@@ -37,11 +37,11 @@ async function main(shapeFile,dataFile,options) {
 
 program
   .command('validate')
-  .argument('<shapeFile>')
   .argument('<dataFile>')
+  .option('-s,--shape <shapeFile>','shape file',process.env.SHAPE_FILE)
   .option('--as <what>','output format','text')
-  .action(async (shapeFile,dataFile,options) => {
-    await main(shapeFile,dataFile,options);
+  .action(async (dataFile,options) => {
+    await main(dataFile,options);
   });
 
 program
@@ -57,15 +57,12 @@ program
 
 program
   .command('server')
+  .option('-s,--shape <shapeFile>','shape file',process.env.SHAPE_FILE)
   .option('--logging','Apache style logging',Boolean(process.env.LOGGING))
   .option('--port <port>','Server port',process.env.PORT)
-  .argument('[<shapeFile>]')
-  .action( (shapeFile,options) => {
-    if (shapeFile) { 
-      runServer(shapeFile, options);
-    }
-    else if (process.env.SHAPE_FILE) {
-      runServer(process.env.SHAPE_FILE, options);
+  .action( (options) => {
+    if (options.shape) { 
+      runServer(options);
     }
     else {
       console.error(`Need a shapeFile or SHAPE_FILE environment variable`);

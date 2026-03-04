@@ -25,11 +25,10 @@
     "example": "examples"
   },
   "bin": {
-    "shacl-validator": "index.js"
+    "shacl-validator": "./bin/index.js"
   },
   "scripts": {
-    "shacl-validator": "node ./index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node ./bin/index.js server",
     "docker:build": "docker build . -t hochstenbach/shacl-validator:v0.0.1",
     "docker:run": "docker run --env-file .env -p 3000:3000 -v shapes:/app/shapes hochstenbach/shacl-validator:v0.0.1"
   },

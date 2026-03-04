@@ -13,7 +13,7 @@ npm install
 Local validate a file
 
 ```
-npx shacl-validator validate [--as [rdf|text]] <shape-file> <data-file>
+npx shacl-validator validate [--shape <shape-file>] [--as [rdf|text]] <data-file>
 ```
 
 The SHACL shape file may optionally include a "%MainSubject%" string in the object position. 
@@ -22,7 +22,7 @@ This string will be replaced by the main subject in the data file (if any).
 Start a validation server:
 
 ```
-npx shacl-validator server [--logging] [--port PORT] [<shape-file>]
+npx shacl-validator server [--shape <shape-file>] [--logging] [--port PORT] 
 ```
 
 The port and shape-file can also be provided by a `.env` file.
