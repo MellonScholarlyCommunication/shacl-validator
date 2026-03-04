@@ -175,7 +175,7 @@ notify:FlagShape
         sh:minCount 0 ;
         sh:maxCount 1 
     ] ;
-    sh:message "a Flag notification without a coar-notify UnprocessableNotification" .
+    sh:message "a Flag notification without a coar-notify:UnprocessableNotification" .
 
 # Announce Shapes. We split them up to have better control over the different
 # types of validation.
@@ -190,7 +190,7 @@ notify:AnnounceEndorsementShape
 			SELECT ?this
 			WHERE {
                 ?this a as:Announce .
-				?this a notify:EndoresementAction .
+				?this a notify:EndorsementAction .
 			}
 		"""
 	] ;

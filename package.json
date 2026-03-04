@@ -41,7 +41,7 @@
     "validator"
   ],
   "author": "Patrick Hochstenbach <Patrick.Hochstenbach@UGent.be>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/MellonScholarlyCommunication/shacl-validator/issues"
   },
