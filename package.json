@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "@zazuko/env": "^3.0.1",
-    "@zazuko/env-node": "^3.0.0",
     "commander": "^14.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.3.1",
@@ -11,8 +9,9 @@
     "rdf-ext": "^2.6.0",
     "rdf-parse": "^4.0.0",
     "rdf-serialize": "^5.1.0",
-    "rdf-validate-shacl": "^0.6.5",
+    "shacl-engine": "^1.1.0",
     "stream-to-string": "^1.2.1",
+    "streamify-array": "^2.0.0",
     "streamify-string": "^1.0.1",
     "winston": "^3.19.0"
   },

@@ -9,24 +9,6 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix this: <https://github.com/MellonScholarlyCommunication/shacl-validator/> .
 
-[
-    a this:Preprocess ; 
-    this:n3Script """
-@prefix as: <https://www.w3.org/ns/activitystreams#> .
-@prefix log: <http://www.w3.org/2000/10/swap/log#> .
-@prefix notify: <http://coar-notify.net/specification/vocabulary/> .
-{
-    ?X a as:Announce .
-    ?X a ?Y .
-    ?Y log:notQualTo as:Announce .
-}
-=>
-{
-    ?X a notify:GenericAction.
-}.
-"""
-].
-
 # Main shape the mother of all subjects
 notify:MainShape
     a sh:NodeShape ;
@@ -200,7 +182,14 @@ notify:FlagShape
 notify:AnnounceEndorsementShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:targetClass notify:EndorsementAction ;
+    sh:targetClass as:Announce;
+    sh:condition [
+         sh:and (
+            [ sh:class notify:EndorsementAction ]
+            [ sh:not [ sh:class notify:ReviewAction ] ]
+            [ sh:not [ sh:class notify:RelationshipAction ] ]
+        )
+    ] ;
     sh:property [
         sh:path as:actor ;
         sh:nodeKind sh:IRI ;
@@ -256,7 +245,14 @@ notify:AnnounceEndorsementShape
 notify:AnnounceReviewShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:targetClass notify:ReviewAction ;
+    sh:targetClass as:Announce ;
+    sh:condition [
+    sh:and (
+            [ sh:not [ sh:class notify:EndorsementAction ] ]
+            [ sh:class notify:ReviewAction ]
+            [ sh:not [ sh:class notify:RelationshipAction ] ]
+        )
+    ] ;
     sh:property [
         sh:path as:actor ;
         sh:nodeKind sh:IRI ;
@@ -312,7 +308,14 @@ notify:AnnounceReviewShape
 notify:AnnounceRelationshipShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:targetClass notify:RelationshipAction ;
+    sh:targetClass as:Announce ;
+    sh:condition [
+         sh:and (
+            [ sh:not [ sh:class notify:EndorsementAction ] ]
+            [ sh:not [ sh:class notify:ReviewAction ] ]
+            [ sh:class notify:RelationshipAction  ]
+        )
+    ] ;
     sh:property [
         sh:path as:actor ;
         sh:nodeKind sh:IRI ;
@@ -368,7 +371,14 @@ notify:AnnounceRelationshipShape
 notify:GenericAnnounceShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:targetClass notify:GenericAction ;
+    sh:targetClass as:Announce ;
+    sh:condition [
+        sh:and (
+            [ sh:not [ sh:class notify:EndorsementAction ] ]
+            [ sh:not [ sh:class notify:ReviewAction ] ]
+            [ sh:not [ sh:class notify:RelationshipAction ] ]
+        )
+    ] ;
     sh:property [
         sh:path as:actor ;
         sh:nodeKind sh:IRI ;
