@@ -67,3 +67,5 @@ document.getElementById('clear').addEventListener('click', () => {
     updateHighlight();
     output.innerHTML = 'Results will appear here...';
 });
+
+document.getElementById('app-name').innerHTML = window._env_.APP_NAME;
