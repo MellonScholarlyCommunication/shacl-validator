@@ -182,14 +182,18 @@ notify:FlagShape
 notify:AnnounceEndorsementShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:targetClass as:Announce;
-    sh:condition [
-         sh:and (
-            [ sh:class notify:EndorsementAction ]
-            [ sh:not [ sh:class notify:ReviewAction ] ]
-            [ sh:not [ sh:class notify:RelationshipAction ] ]
-        )
-    ] ;
+    sh:target [
+        a sh:SPARQLTarget ;
+	    sh:select """
+            PREFIX notify: <http://coar-notify.net/specification/vocabulary/> 
+            PREFIX as: <https://www.w3.org/ns/activitystreams#> 
+			SELECT ?this
+			WHERE {
+                ?this a as:Announce .
+				?this a notify:EndoresementAction .
+			}
+		"""
+	] ;
     sh:property [
         sh:path as:actor ;
         sh:nodeKind sh:IRI ;
@@ -245,14 +249,18 @@ notify:AnnounceEndorsementShape
 notify:AnnounceReviewShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:targetClass as:Announce ;
-    sh:condition [
-    sh:and (
-            [ sh:not [ sh:class notify:EndorsementAction ] ]
-            [ sh:class notify:ReviewAction ]
-            [ sh:not [ sh:class notify:RelationshipAction ] ]
-        )
-    ] ;
+    sh:target [
+        a sh:SPARQLTarget ;
+	    sh:select """
+            PREFIX notify: <http://coar-notify.net/specification/vocabulary/> 
+            PREFIX as: <https://www.w3.org/ns/activitystreams#> 
+			SELECT ?this
+			WHERE {
+                ?this a as:Announce .
+				?this a notify:ReviewAction .
+			}
+		"""
+	] ;
     sh:property [
         sh:path as:actor ;
         sh:nodeKind sh:IRI ;
@@ -308,14 +316,18 @@ notify:AnnounceReviewShape
 notify:AnnounceRelationshipShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:targetClass as:Announce ;
-    sh:condition [
-         sh:and (
-            [ sh:not [ sh:class notify:EndorsementAction ] ]
-            [ sh:not [ sh:class notify:ReviewAction ] ]
-            [ sh:class notify:RelationshipAction  ]
-        )
-    ] ;
+    sh:target [
+        a sh:SPARQLTarget ;
+	    sh:select """
+            PREFIX notify: <http://coar-notify.net/specification/vocabulary/> 
+            PREFIX as: <https://www.w3.org/ns/activitystreams#> 
+			SELECT ?this
+			WHERE {
+                ?this a as:Announce .
+				?this a notify:RelationshipAction .
+			}
+		"""
+	] ;
     sh:property [
         sh:path as:actor ;
         sh:nodeKind sh:IRI ;
@@ -371,14 +383,18 @@ notify:AnnounceRelationshipShape
 notify:GenericAnnounceShape
     a sh:NodeShape ;
     sh:closed false ;
-    sh:targetClass as:Announce ;
-    sh:condition [
-        sh:and (
-            [ sh:not [ sh:class notify:EndorsementAction ] ]
-            [ sh:not [ sh:class notify:ReviewAction ] ]
-            [ sh:not [ sh:class notify:RelationshipAction ] ]
-        )
-    ] ;
+    sh:target [
+        a sh:SPARQLTarget ;
+	    sh:select """
+            PREFIX notify: <http://coar-notify.net/specification/vocabulary/> 
+            PREFIX as: <https://www.w3.org/ns/activitystreams#> 
+			SELECT ?this
+			WHERE {
+                ?this a as:Announce .
+				?this a notify:GenericAction .
+			}
+		"""
+	] ;
     sh:property [
         sh:path as:actor ;
         sh:nodeKind sh:IRI ;
