@@ -1,0 +1,176 @@
+[
+  {
+    "@id": "https://generic-service-1.com",
+    "https://www.w3.org/ns/activitystreams#name": [
+      {
+        "@value": "Generic Service"
+      }
+    ],
+    "@type": [
+      "https://www.w3.org/ns/activitystreams#Service"
+    ]
+  },
+  {
+    "@id": "urn:uuid:4fb3af44-d4f8-4226-9475-2d09c2d8d9e0",
+    "https://www.w3.org/ns/activitystreams#inReplyTo": [
+      {
+        "@id": "urn:uuid:0370c0fb-bb78-4a9b-87f5-bed307a509dd"
+      }
+    ]
+  },
+  {
+    "@id": "https://orcid.org/0000-0002-1825-0097",
+    "https://www.w3.org/ns/activitystreams#name": [
+      {
+        "@value": "Josiah Carberry"
+      }
+    ],
+    "@type": [
+      "https://www.w3.org/ns/activitystreams#Person"
+    ]
+  },
+  {
+    "@id": "https://research-organisation.org/repository/preprint/201203/421/",
+    "http://www.iana.org/assignments/relation/cite-as": [
+      {
+        "@id": "https://doi.org/10.5555/12345680"
+      }
+    ]
+  },
+  {
+    "@id": "https://research-organisation.org/repository/preprint/201203/421/content.pdf",
+    "https://www.w3.org/ns/activitystreams#mediaType": [
+      {
+        "@value": "application/pdf"
+      }
+    ],
+    "@type": [
+      "https://www.w3.org/ns/activitystreams#Article"
+      ,
+      "http://schema.org/AboutPage"
+    ]
+  },
+  {
+    "@id": "https://research-organisation.org/repository/preprint/201203/421/",
+    "http://www.iana.org/assignments/relation/item": [
+      {
+        "@id": "https://research-organisation.org/repository/preprint/201203/421/content.pdf"
+      }
+    ],
+    "@type": [
+      "https://www.w3.org/ns/activitystreams#Page"
+      ,
+      "http://schema.org/AboutPage"
+    ]
+  },
+  {
+    "@id": "urn:uuid:0370c0fb-bb78-4a9b-87f5-bed307a509dd",
+    "https://www.w3.org/ns/activitystreams#object": [
+      {
+        "@id": "https://research-organisation.org/repository/preprint/201203/421/"
+      }
+    ]
+  },
+  {
+    "@id": "https://research-organisation.org/repository",
+    "http://www.w3.org/ns/ldp#inbox": [
+      {
+        "@id": "https://research-organisation.org/inbox/"
+      }
+    ],
+    "@type": [
+      "https://www.w3.org/ns/activitystreams#Service"
+    ]
+  },
+  {
+    "@id": "urn:uuid:0370c0fb-bb78-4a9b-87f5-bed307a509dd",
+    "https://www.w3.org/ns/activitystreams#origin": [
+      {
+        "@id": "https://research-organisation.org/repository"
+      }
+    ]
+  },
+  {
+    "@id": "https://overlay-journal.com/system",
+    "http://www.w3.org/ns/ldp#inbox": [
+      {
+        "@id": "https://overlay-journal.com/inbox/"
+      }
+    ],
+    "@type": [
+      "https://www.w3.org/ns/activitystreams#Service"
+    ]
+  },
+  {
+    "@id": "urn:uuid:0370c0fb-bb78-4a9b-87f5-bed307a509dd",
+    "https://www.w3.org/ns/activitystreams#target": [
+      {
+        "@id": "https://overlay-journal.com/system"
+      }
+    ],
+    "@type": [
+      "https://www.w3.org/ns/activitystreams#Offer"
+      ,
+      "http://coar-notify.net/specification/vocabulary/EndorsementAction"
+    ],
+    "https://www.w3.org/ns/activitystreams#actor": [
+      {
+        "@id": "https://orcid.org/0000-0002-1825-0097"
+      }
+    ]
+  },
+  {
+    "@id": "urn:uuid:4fb3af44-d4f8-4226-9475-2d09c2d8d9e0",
+    "https://www.w3.org/ns/activitystreams#object": [
+      {
+        "@id": "urn:uuid:0370c0fb-bb78-4a9b-87f5-bed307a509dd"
+      }
+    ]
+  },
+  {
+    "@id": "https://generic-service-1.com/origin-system",
+    "http://www.w3.org/ns/ldp#inbox": [
+      {
+        "@id": "https://generic-service-1.com/origin-system/inbox/"
+      }
+    ],
+    "@type": [
+      "https://www.w3.org/ns/activitystreams#Service"
+    ]
+  },
+  {
+    "@id": "urn:uuid:4fb3af44-d4f8-4226-9475-2d09c2d8d9e0",
+    "https://www.w3.org/ns/activitystreams#origin": [
+      {
+        "@id": "https://generic-service-1.com/origin-system"
+      }
+    ]
+  },
+  {
+    "@id": "https://generic-service-2.com/target-system",
+    "http://www.w3.org/ns/ldp#inbox": [
+      {
+        "@id": "https://generic-service-2.com/target-system/inbox/"
+      }
+    ],
+    "@type": [
+      "https://www.w3.org/ns/activitystreams#Service"
+    ]
+  },
+  {
+    "@id": "urn:uuid:4fb3af44-d4f8-4226-9475-2d09c2d8d9e0",
+    "https://www.w3.org/ns/activitystreams#target": [
+      {
+        "@id": "https://generic-service-2.com/target-system"
+      }
+    ],
+    "@type": [
+      "https://www.w3.org/ns/activitystreams#Accept"
+    ],
+    "https://www.w3.org/ns/activitystreams#actor": [
+      {
+        "@id": "https://generic-service-1.com"
+      }
+    ]
+  }
+]

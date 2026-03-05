@@ -1,14 +1,19 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
+  "errorMessage": "preferred input is a JSON-LD compact form, not an array",
   "propertyNames": {
-    "pattern": "^@?[a-zA-Z]+$",
-    "errorMessage": "Property names may only contain letters a-z,A-Z"
+    "pattern": "^(@context|[a-zA-Z-]+(:[a-zA-Z-]+)?)$",
+    "errorMessage": "property should match a simple name or namespace:name"
   },
   "properties": {
     "@context": {
         "type": "array",
         "items": { "type": "string" }
+    },
+    "@graph": {
+      "not": {},
+      "errorMessage": " The '@graph' construct in your JSON-LD is not preferred. Please use a simpler, more compact form"
     },
     "@id": { 
       "not": {},
