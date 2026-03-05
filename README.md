@@ -32,7 +32,7 @@ Visit http://localhost:3000/ to see a sample validator application.
 Send an example file to the server API:
 
 ```
-curl -X POST --data-binary @examples/badexample3.jsonld http://localhost:3000/validate
+curl -X POST --data-binary @examples/event-notifictions/badexample3.jsonld http://localhost:3000/validate
 ```
 
 ## Report

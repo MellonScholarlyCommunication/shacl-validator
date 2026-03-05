@@ -104,6 +104,7 @@ program
   .command('server')
   .option('-c,--cache <contextCache>', 'local cache of JSON-LD contexts', process.env.CACHE)
   .option('-s,--shape <shapeFile>','shape file',process.env.SHAPE_FILE)
+  .option('--maxLength <size>','max size of an upload',Number(process.env.MAX_UPLOAD_SIZE))
   .option('--safe', 'load only context URLs from the cache')
   .option('--logging','Apache style logging',Boolean(process.env.LOGGING))
   .option('--port <port>','Server port',process.env.PORT)
