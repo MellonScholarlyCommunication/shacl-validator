@@ -5,6 +5,7 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "jsonld": "^9.0.0",
+    "log4js": "^6.9.1",
     "marked": "^17.0.1",
     "morgan": "^1.10.1",
     "rdf-ext": "^2.6.0",
@@ -28,7 +29,7 @@
     "shacl-validator": "./bin/index.js"
   },
   "scripts": {
-    "server": "node ./bin/index.js server",
+    "server": "node ./bin/index.js server --debug",
     "docker:build": "docker build . -t hochstenbach/shacl-validator:v0.0.1",
     "docker:run": "docker run --env-file .env -p 3000:3000 -v shapes:/app/shapes hochstenbach/shacl-validator:v0.0.1"
   },
