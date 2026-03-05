@@ -31,7 +31,7 @@
   "scripts": {
     "server": "node ./bin/index.js server --debug",
     "docker:build": "docker build . -t hochstenbach/shacl-validator:v0.0.1",
-    "docker:run": "docker run --env-file .env -p 3000:3000 -v shapes:/app/shapes hochstenbach/shacl-validator:v0.0.1"
+    "docker:run": "docker run --rm --env-file .env -p 3000:3000 -v `pwd`/shapes:/app/shapes hochstenbach/shacl-validator:v0.0.1"
   },
   "repository": {
     "type": "git",
