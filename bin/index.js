@@ -3,7 +3,7 @@
 import fs from 'fs';
 import { program } from 'commander';
 import { SHACLValidator } from '../lib/validator/shacl-validator.js';
-import { streamRDFfromTo, parseRDFStream  } from '../lib/util.js';
+import { streamRDFfromTo, parseRDFStream, datasetTo  } from '../lib/util.js';
 import { runServer } from '../lib/server.js';
 import 'dotenv/config';
 
@@ -12,6 +12,7 @@ async function main(dataFile,options) {
     const validator = new SHACLValidator();
     const shapes = await parseRDFStream(fs.createReadStream(options.shape), options.shape);
     const data   = await parseRDFStream(fs.createReadStream(dataFile), dataFile);
+
     const report = await validator.validate(shapes,data);
     
     if (options.as == 'rdf') {
@@ -19,6 +20,19 @@ async function main(dataFile,options) {
     }
     else if (options.as == 'text') {
       console.log(await validator.reportAsMarkdown(report));
+
+      if (options.dump) {
+        console.log(`
+***Dump Data***
+
+\`\`\`
+${await validator.dataAsRDF(data)}
+\`\`\`
+`);
+      } 
+    }
+    else {
+      console.log(validator.isReportValid(report));
     }
 
     if (validator.isReportValid(report)) {
@@ -38,7 +52,10 @@ async function main(dataFile,options) {
 program
   .command('validate')
   .argument('<dataFile>')
+  .option('-d,--dump','dump the data as part of the report')
+  .option('-c,--cache <contextCache>', 'local cache of JSON-LD contexts', './cache.json')
   .option('-s,--shape <shapeFile>','shape file',process.env.SHAPE_FILE)
+  .option('--safe', 'load only context URLs from the cache', Boolean(process.env.SAFE_MODE))
   .option('--as <what>','output format','text')
   .action(async (dataFile,options) => {
     await main(dataFile,options);
