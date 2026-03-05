@@ -1,7 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "errorMessage": "preferred input is a JSON-LD compact form, not an array",
   "propertyNames": {
     "pattern": "^(@context|[a-zA-Z-]+(:[a-zA-Z-]+)?)$",
     "errorMessage": "property should match a simple name or namespace:name"
@@ -9,7 +8,16 @@
   "properties": {
     "@context": {
         "type": "array",
-        "items": { "type": "string" }
+        "minItems": 2,
+        "maxItems": 2,
+        "items": { 
+          "type": "string",
+          "enum": [
+              "https://www.w3.org/ns/activitystreams",
+              "https://coar-notify.net"
+          ]
+        },
+        "errorMessage": "preferably an array with the activitystreams and coar-notify contexts"
     },
     "@graph": {
       "not": {},
