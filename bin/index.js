@@ -7,6 +7,7 @@ import { streamRDFfromTo, parseRDFStream, datasetTo  } from '../lib/util.js';
 import { runServer } from '../lib/server.js';
 import log4js from 'log4js';
 import 'dotenv/config';
+import { JSONSchemaValidator } from '../lib/validator/json-schema-validator.js';
 
 const logger = log4js.getLogger();
 
@@ -53,6 +54,18 @@ ${await validator.dataAsRDF(data)}
       console.log(validator.isReportValid(report));
     }
 
+    if (options.schema) {
+      const validator = new JSONSchemaValidator();
+      const schema = JSON.parse(fs.readFileSync(options.schema,'utf-8'));
+      const data = JSON.parse(fs.readFileSync(dataFile,'utf-8'));
+
+      const report = await validator.validate(schema,data);
+
+      if (options.as === 'text') {
+         console.log(await validator.reportAsMarkdown(report));
+      }
+    }
+
     if (validator.isReportValid(report)) {
       process.exit(0);
     }
@@ -77,7 +90,8 @@ program
   .argument('<dataFile>')
   .option('-d,--dump','dump the data as part of the report')
   .option('-c,--cache <contextCache>', 'local cache of JSON-LD contexts', process.env.CACHE)
-  .option('-s,--shape <shapeFile>','shape file',process.env.SHAPE_FILE)
+  .option('-s,--shape <shapeFile>','SHACL shape file',process.env.SHAPE_FILE)
+  .option('--schema <schemaFile>','JSON schema file',process.env.SCHEMA_FILE)
   .option('--safe', 'load only context URLs from the cache')
   .option('--as <what>','output format','text')
   .action(async (dataFile,options) => {
