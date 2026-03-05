@@ -1,13 +1,25 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
+  "propertyNames": {
+    "pattern": "^@?[a-zA-Z]+$",
+    "errorMessage": "Property names may only contain letters a-z,A-Z"
+  },
   "properties": {
     "@context": {
         "type": "array",
         "items": { "type": "string" }
     },
+    "@id": { 
+      "not": {},
+      "errorMessage": "the '@id' property is not preferred, use 'id'"
+    },
     "id": { "type": "string" },
     "summary": { "type": "string" },
+    "@type": { 
+      "not": {},
+      "errorMessage": "the '@type' property is not preferred, use 'type'"
+    },
     "type": {
         "oneOf": [
             { "type": "string" },
@@ -20,7 +32,15 @@
     "actor": {
       "type": "object",
       "properties": {
+        "@id": { 
+          "not": {},
+          "errorMessage": "the '@id' property is not preferred, use 'id'"
+        },
         "id": { "type": "string" },
+        "@type": { 
+          "not": {},
+          "errorMessage": "the '@type' property is not preferred, use 'type'"
+        },
         "type": { "type": "string" },
         "name": { "type": "string" } 
       },
@@ -30,7 +50,15 @@
     "origin": {
       "type": "object",
       "properties": {
+        "@id": { 
+          "not": {},
+          "errorMessage": "the '@id' property is not preferred, use 'id'"
+        },
         "id": { "type": "string" },
+        "@type": { 
+          "not": {},
+          "errorMessage": "the '@type' property is not preferred, use 'type'"
+        },
         "type": { "type": "string" },
         "name": { "type": "string" } 
       },
@@ -41,7 +69,15 @@
     "target": {
       "type": "object",
       "properties": {
+        "@id": { 
+          "not": {},
+          "errorMessage": "the '@id' property is not preferred, use 'id'"
+        },
         "id": { "type": "string" },
+        "@type": { 
+          "not": {},
+          "errorMessage": "the '@type' property is not preferred, use 'type'"
+        },
         "type": { "type": "string" },
         "name": { "type": "string" } 
       },
