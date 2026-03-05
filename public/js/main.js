@@ -69,3 +69,4 @@ document.getElementById('clear').addEventListener('click', () => {
 });
 
 document.getElementById('app-name').innerHTML = window._env_.APP_NAME;
+document.getElementById('app-title').innerHTML = window._env_.APP_TITLE;
