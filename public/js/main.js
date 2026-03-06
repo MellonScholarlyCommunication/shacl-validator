@@ -97,6 +97,7 @@ document.getElementById('clear').addEventListener('click', () => {
 // Dynamically set the app-name and app-title
 document.getElementById('app-name').innerHTML = window._env_.APP_NAME;
 document.getElementById('app-title').innerHTML = window._env_.APP_TITLE;
+document.getElementById('title').innerHTML = window._env_.APP_TITLE;
 
 const dataParam = currentUrl.searchParams.get('data');
 if (dataParam) {
