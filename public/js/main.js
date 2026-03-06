@@ -1,3 +1,4 @@
+const currentUrl = new URL(window.location.href);
 const textarea = document.getElementById('input');
 const highlightingContent = document.getElementById('highlighting-content');
 const highlighting = document.getElementById('highlighting');
@@ -12,6 +13,22 @@ function updateHighlight() {
     Prism.highlightElement(highlightingContent);
 }
 
+function encodeToBase64URL(str) {
+  const base64 = btoa(encodeURIComponent(str));
+  return base64;
+}
+
+function decodeFromBase64URL(base64) {
+  const str = decodeURIComponent(atob(base64));
+  return str;
+}
+
+function updateSearchParam(text) {
+    const encodedValue = encodeToBase64URL(text);
+    currentUrl.searchParams.set('data', encodedValue);
+    window.history.pushState({}, '', currentUrl);
+}
+
 textarea.addEventListener('scroll', () => {
     highlighting.scrollTop = textarea.scrollTop;
     highlighting.scrollLeft = textarea.scrollLeft;
@@ -19,6 +36,7 @@ textarea.addEventListener('scroll', () => {
 
 textarea.addEventListener('input', updateHighlight);
 
+// Handle the file picker...
 filePicker.addEventListener('change', async (event) => {
     const file = event.target.files[0];
 
@@ -29,10 +47,17 @@ filePicker.addEventListener('change', async (event) => {
     reader.onload = (e) => {
         textarea.value = e.target.result;
         updateHighlight();
+        updateSearchParam(textarea.value);
     };
     reader.readAsText(file);
 });
 
+// Update the data search param when the text-area is updated
+textarea.addEventListener('input', function() {
+    updateSearchParam(this.value);
+});
+
+// Validate button clicked...
 document.getElementById('send').addEventListener('click', async () => {
     const content = textarea.value.trim();
 
@@ -62,11 +87,19 @@ document.getElementById('send').addEventListener('click', async () => {
       }
 });
 
+// Clear button clicked...
 document.getElementById('clear').addEventListener('click', () => {
     textarea.value = '';
     updateHighlight();
     output.innerHTML = 'Results will appear here...';
 });
 
+// Dynamically set the app-name and app-title
 document.getElementById('app-name').innerHTML = window._env_.APP_NAME;
 document.getElementById('app-title').innerHTML = window._env_.APP_TITLE;
+
+const dataParam = currentUrl.searchParams.get('data');
+if (dataParam) {
+    textarea.value = decodeFromBase64URL(dataParam);
+    updateHighlight();
+}
