@@ -25,7 +25,12 @@ function decodeFromBase64URL(base64) {
 
 function updateSearchParam(text) {
     const encodedValue = encodeToBase64URL(text);
-    currentUrl.searchParams.set('data', encodedValue);
+    if (text) {
+      currentUrl.searchParams.set('data', encodedValue);
+    }
+    else {
+      currentUrl.searchParams.delete('data');
+    }
     window.history.pushState({}, '', currentUrl);
 }
 
@@ -47,14 +52,14 @@ filePicker.addEventListener('change', async (event) => {
     reader.onload = (e) => {
         textarea.value = e.target.result;
         updateHighlight();
-        updateSearchParam(textarea.value);
+       // updateSearchParam(textarea.value);
     };
     reader.readAsText(file);
 });
 
 // Update the data search param when the text-area is updated
 textarea.addEventListener('input', function() {
-    updateSearchParam(this.value);
+    // updateSearchParam(this.value);
 });
 
 // Validate button clicked...
@@ -66,9 +71,13 @@ document.getElementById('send').addEventListener('click', async () => {
     output.innerHTML = `<div class="spinner-border spinner-border-sm text-primary"></div> Processing...`;
 
     try {
-        const response = await fetch('/validate', {
+        const validateUrl = new URL('/validate', window.location.origin);
+        const response = await fetch(validateUrl.toString(), {
           method: 'POST',
-          headers: { 'Content-Type': 'application/ld+json' },
+          headers: { 
+            'Content-Type': 'application/ld+json',
+            'Referer': ''
+          },
           body: content
         });
         
@@ -91,6 +100,7 @@ document.getElementById('send').addEventListener('click', async () => {
 document.getElementById('clear').addEventListener('click', () => {
     textarea.value = '';
     updateHighlight();
+    updateSearchParam('');
     output.innerHTML = 'Results will appear here...';
 });
 
@@ -99,6 +109,18 @@ document.getElementById('app-name').innerHTML = window._env_.APP_NAME;
 document.getElementById('app-title').innerHTML = window._env_.APP_TITLE;
 document.getElementById('title').innerHTML = window._env_.APP_TITLE;
 
+// Create a URL with a data param
+document.getElementById('copyBtn').addEventListener('click', () => {
+    const copyUrl = new URL(window.location.href);
+    const encodedValue = encodeToBase64URL(textarea.value);
+    copyUrl.searchParams.set('data', encodedValue);
+    navigator.clipboard.writeText(copyUrl.href);
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy URL', 2000);
+});
+
+// Set the textarea based on the data param
 const dataParam = currentUrl.searchParams.get('data');
 if (dataParam) {
     textarea.value = decodeFromBase64URL(dataParam);
