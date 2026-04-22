@@ -2,10 +2,18 @@
 
 A command line SHACL validator
 
+## Depedencies
+
+Node v22.14.0 or better
+
 ## Install
 
 ```
 npm install
+```
+
+```
+cp .env-sample .env
 ```
 
 ## Usage
@@ -22,7 +30,7 @@ This string will be replaced by the main subject in the data file (if any).
 Start a validation server:
 
 ```
-npx shacl-validator server [--shape <shape-file>] [--logging] [--port PORT] 
+npm run server
 ```
 
 The port and shape-file can also be provided by a `.env` file.
