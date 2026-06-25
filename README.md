@@ -46,14 +46,23 @@ curl -X POST --data-binary @examples/event-notifications/badexample3.jsonld http
 ## Deployment Hints
  
 - Keep `SAFE_MODE=true` in `.env` so JSON-LD `@context` URLs resolve from the cache instead of being fetched (SSRF). 
-- The `/validate` endpoint is unauthenticated and CPU-bound, use rate-limit in nginx:
+- The `/validate` endpoint is unauthenticated and CPU-bound, so it has a **built-in rate limit** (on by default). Tune it in `.env`:
+  - `RATE_LIMIT` — max requests per window (default `60`, set `0` to disable).
+  - `RATE_LIMIT_WINDOW` — window in seconds (default `60`).
+  - `TRUST_PROXY` — set when rate limiting is one on nginx
+
+Additional rate limits can be set in an nginx reverse proxy.
+
+In the `nginx.con http { ... }` block (or a `conf.d/*.conf` file):
 
 ```nginx
-# http {}
 limit_req_zone $binary_remote_addr zone=validate:10m rate=10r/s;
 limit_req_status 429;
+```
 
-# server {}
+In the `server { ... }` block:
+
+```nginx
 location = /validate {
     limit_req zone=validate burst=20 nodelay;
     client_max_body_size 16k;
