@@ -97,7 +97,7 @@ program
   .action(async (dataFile,options) => {
     setLoggingLevel();
 
-    options.safe = options.safe || Boolean(process.env.SAFE_MODE);
+    options.safe = options.safe || process.env.SAFE_MODE === 'true';
 
     await main(dataFile,options);
   });
@@ -126,7 +126,7 @@ program
   .action( (options) => {
     setLoggingLevel();
    
-    options.safe = options.safe || Boolean(process.env.SAFE_MODE);
+    options.safe = options.safe || process.env.SAFE_MODE === 'true';
 
     logger.debug(`server options: `,options);
 

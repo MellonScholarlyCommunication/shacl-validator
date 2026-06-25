@@ -68,6 +68,7 @@ document.getElementById('send').addEventListener('click', async () => {
 
     if (!content) return;
 
+    output.classList.remove('error');
     output.innerHTML = `<div class="spinner-border spinner-border-sm text-primary"></div> Processing...`;
 
     try {
@@ -81,18 +82,20 @@ document.getElementById('send').addEventListener('click', async () => {
           body: content
         });
         
-        if (!response.ok) throw new Error(`Server error: ${response.status}`);
+        const res = await response.json().catch(() => ({}));
 
-        const res = await response.json();
-
-        if (res.error) {
-          output.innerHTML = `<span class="error">Error: ${res.error}</span>`;
+        if (!response.ok || res.error) {
+          const msg = res.error || `Server error: ${response.status}`;
+          output.textContent = `Error: ${msg}`;
+          output.classList.add('error');
         }
         else {
-          output.innerHTML = res['result'] || 'Validation successful (no details returned).';
+          // The report is server-generated HTML rendered into the DOM; sanitize before inserting.
+          output.innerHTML = DOMPurify.sanitize(res['result'] || 'Validation successful (no details returned).');
         }
       } catch (err) {
-        output.innerHTML = `<span class="error">Error: ${err.message}</span>`;
+        output.textContent = `Error: ${err.message}`;
+        output.classList.add('error');
       }
 });
 

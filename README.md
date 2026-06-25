@@ -43,6 +43,24 @@ Send an example file to the server API:
 curl -X POST --data-binary @examples/event-notifications/badexample3.jsonld http://localhost:3000/validate
 ```
 
+## Deployment Hints
+ 
+- Keep `SAFE_MODE=true` in `.env` so JSON-LD `@context` URLs resolve from the cache instead of being fetched (SSRF). 
+- The `/validate` endpoint is unauthenticated and CPU-bound, use rate-limit in nginx:
+
+```nginx
+# http {}
+limit_req_zone $binary_remote_addr zone=validate:10m rate=10r/s;
+limit_req_status 429;
+
+# server {}
+location = /validate {
+    limit_req zone=validate burst=20 nodelay;
+    client_max_body_size 16k;
+    proxy_pass http://127.0.0.1:3000;
+}
+```
+
 ## Report
 
 Possible error reports.
