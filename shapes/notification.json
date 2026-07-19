@@ -17,7 +17,7 @@
               "https://coar-notify.net"
           ]
         },
-        "errorMessage": "preferably an array with the activitystreams and coar-notify contexts"
+        "errorMessage": "preferably an array with the https://www.w3.org/ns/activitystreams and https://coar-notify.net contexts"
     },
     "@graph": {
       "not": {},
