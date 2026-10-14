@@ -1,0 +1,42 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    "https://coar-notify.net"
+  ],
+  "id": "urn:uuid:6bf9e344791441a3bf99f8132f8c0873",
+  "type": [
+    "Offer",
+    "coar-notify:EndorsementAction"
+  ],
+  "actor": {
+    "id": "mailto:martinklein0815@gmail.com",
+    "type": "Person",
+    "name": "martinklein0815@gmail.com"
+  },
+  "object": {
+    "id": "https://notify-inbox.info/records/22vng-rfc03",
+    "type": [
+      "Page",
+      "sorg:AboutPage"
+    ],
+    "ietf:cite-as": "https://notify-inbox.info/records/22vng-rfc03",
+    "ietf:item": {
+      "id": "https://notify-inbox.info/records/22vng-rfc03",
+      "mediaType": "text/html",
+      "type": [
+        "Page",
+        "sorg:AboutPage"
+      ]
+    }
+  },
+  "origin": {
+    "id": "https://notify-inbox.info",
+    "type": "Service",
+    "inbox": "https://notify-inbox.info/api/notify/inbox"
+  },
+  "target": {
+    "id": "https://inboxviewer.patrickhochstenbach.net/service/",
+    "type": "Service",
+    "inbox": "https://inboxviewer.patrickhochstenbach.net/service/inbox/"
+  }
+}
